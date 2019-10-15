@@ -13,6 +13,8 @@ public:
 
 signals:
     void enterPressed();
+    void previousExp();
+    void nextExp();
 
 protected:
     void keyPressEvent(QKeyEvent *event);

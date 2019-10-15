@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QString>
 #include <QKeyEvent>
+#include <QStringList>
+
+#include <QDebug>
 
 #include "toplevel.h"
 #include "textedit.h"
@@ -24,6 +27,9 @@ private:
     Ui::MainWindow *ui;
     TopLevel caml_toplevel;
     int readOnlyRange;
+    QStringList expHistory;
+    int expIndex;
+    bool lastExpNotEvaluated;
 
 private slots:
     void readInput();
@@ -31,6 +37,10 @@ private slots:
     void displayOutput(QString out);
     void checkCurrentPosition();
     void checkCompleteness();
+
+    // Navigation through previously evaluated expressions
+    void displayPreviousExp();
+    void displayNextExp();
 
 protected:
 };
