@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&caml_toplevel, &TopLevel::evalDone, this, &MainWindow::readInput);
     connect(&caml_toplevel, &TopLevel::requestEval, this, &MainWindow::disableInput);
     connect(&caml_toplevel, &TopLevel::writeOutput, this, &MainWindow::displayOutput);
+    connect(&caml_toplevel, &TopLevel::exitRequested, qApp, &QApplication::quit);
     connect(ui->textEdit, &QTextEdit::cursorPositionChanged, this, &MainWindow::checkCurrentPosition);
     connect(ui->textEdit, &TextEdit::enterPressed, this, &MainWindow::checkCompleteness);
 
