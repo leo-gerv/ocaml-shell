@@ -5,6 +5,10 @@
 #include <QString>
 #include <QKeyEvent>
 #include <QStringList>
+#include <QList>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QFile>
 
 #include <QDebug>
 
@@ -29,6 +33,7 @@ private:
     int readOnlyRange;
     QStringList expHistory;
     int expIndex;
+    QList<int> validExp;
     bool lastExpNotEvaluated;
 
 private slots:
@@ -41,6 +46,8 @@ private slots:
     // Navigation through previously evaluated expressions
     void displayPreviousExp();
     void displayNextExp();
+
+    void on_saveExp_triggered();
 
 protected:
 };

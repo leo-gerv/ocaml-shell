@@ -15,7 +15,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(64, 64, 64);
-color: rgb(142, 178, 200);</string>
+color: rgb(142, 178, 200);
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -54,8 +55,9 @@ border-radius: 4px;</string>
    </property>
    <widget class="QMenu" name="menuSome_menu">
     <property name="title">
-     <string>Some menu</string>
+     <string>Current session</string>
     </property>
+    <addaction name="saveExp"/>
    </widget>
    <addaction name="menuSome_menu"/>
   </widget>
@@ -70,6 +72,11 @@ border-radius: 4px;</string>
     <string/>
    </property>
   </widget>
+  <action name="saveExp">
+   <property name="text">
+    <string>Save valid expressions</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

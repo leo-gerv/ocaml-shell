@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
       readOnlyRange(0),
       expHistory(),
       expIndex(0),
+      validExp(),
       lastExpNotEvaluated(false)
 {
     ui->setupUi(this);
@@ -34,6 +35,21 @@ MainWindow::~MainWindow()
 void MainWindow::readInput()
 {
     ui->statusbar->showMessage("Status: Done evaluating. Ready for input !");
+    if (!expHistory.isEmpty()) {
+        QStringList lines = ui->textEdit->toPlainText().split("\n");
+        QStringList evalLine = lines[lines.length()-2].split(":");
+        QString partWithStatus = evalLine[evalLine.length()-2];
+        partWithStatus = partWithStatus.mid(partWithStatus.length()-10);
+        if (partWithStatus.contains("Error") || partWithStatus.contains("Exception")) {
+            validExp.append(false);
+            ui->statusbar->showMessage("Status: evaluation failed due to an error or exception. Ready for input !");
+            // some syntax highlight ?
+        }
+        else {
+            validExp.append(true);
+            // some syntax highlight ?
+        }
+    }
 }
 
 void MainWindow::disableInput()
@@ -44,6 +60,25 @@ void MainWindow::displayOutput(QString out)
     ui->textEdit->setText(ui->textEdit->toPlainText() + out);
     ui->textEdit->moveCursor(QTextCursor::End);
     readOnlyRange = ui->textEdit->toPlainText().length(); // fk optimization
+}
+
+void MainWindow::on_saveExp_triggered()
+{
+    QString url = QFileDialog::getSaveFileName(this, "Save expressions", "~/");
+    if (url.isEmpty())
+        return;
+    QFile f(url);
+    if (!f.open(QIODevice::ReadWrite)) {
+        QMessageBox::critical(this, "Error", "Access to file denied");
+        return;
+    }
+    QString data;
+    for (int i=0, l=validExp.length(); i<l; i++) {
+        if (validExp[i])
+            data.append(expHistory[i] + "\n\n");
+    }
+    f.write(data.toUtf8());
+    f.close();
 }
 
 void MainWindow::checkCurrentPosition()
