@@ -15,6 +15,11 @@ void TopLevel::initCaml() // Warning: no failsafe mechanism.
     ocaml_process.start("ocaml");
 }
 
+void TopLevel::killCaml()
+{
+    ocaml_process.write(";;\nexit 0;;\n");
+}
+
 void TopLevel::readOutput()
 {
     QString output = ocaml_process.readAllStandardOutput();
@@ -37,5 +42,6 @@ void TopLevel::evalInput() // Private one: Directly evaluates expression. We cou
 void TopLevel::sendExitRequest(int exitCode, QProcess::ExitStatus exitStatus)
 {
     Q_UNUSED(exitStatus)
-    emit exitRequested(exitCode);
+    Q_UNUSED(exitCode)
+    emit exitRequested();
 }

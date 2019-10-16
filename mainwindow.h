@@ -13,6 +13,10 @@
 
 #include <QDebug>
 
+#include <QCloseEvent>
+#include <QSound>
+#include <QTextFragment>
+
 #include "toplevel.h"
 #include "textedit.h"
 #include "builtin_exps.h"
@@ -37,6 +41,7 @@ private:
     int expIndex;
     QList<int> validExp;
     bool lastExpNotEvaluated;
+    QSound beep_sound;
 
 private slots:
     void readInput();
@@ -54,5 +59,6 @@ private slots:
     void on_saveExp_triggered();
 
 protected:
+    void closeEvent(QCloseEvent *event);
 };
 #endif // MAINWINDOW_H

@@ -9,7 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
       expHistory(),
       expIndex(0),
       validExp(),
-      lastExpNotEvaluated(false)
+      lastExpNotEvaluated(false),
+      beep_sound(":/beep.wav", this)
 {
     ui->setupUi(this);
 
@@ -18,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&caml_toplevel, &TopLevel::evalDone, this, &MainWindow::readInput);
     connect(&caml_toplevel, &TopLevel::requestEval, this, &MainWindow::disableInput);
     connect(&caml_toplevel, &TopLevel::writeOutput, this, &MainWindow::displayOutput);
-    connect(&caml_toplevel, &TopLevel::exitRequested, qApp, &QApplication::quit);
+    connect(&caml_toplevel, SIGNAL(exitRequested()), qApp, SLOT(quit()));
     connect(ui->textEdit, &QTextEdit::cursorPositionChanged, this, &MainWindow::checkCurrentPosition);
     connect(ui->textEdit, &TextEdit::enterPressed, this, &MainWindow::checkCompleteness);
     connect(ui->textEdit, &TextEdit::nextExp, this, &MainWindow::displayNextExp);
@@ -50,6 +51,13 @@ void MainWindow::requestAutocomplete()
         ui->textEdit->setText(buffer.mid(0, buffer.length() - currentWord.length()) + matchingFunctions.first() + " ");
         ui->textEdit->moveCursor(QTextCursor::End);
     }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    caml_toplevel.killCaml();
+    QMainWindow::closeEvent(event);
+    qApp->quit();
 }
 
 void MainWindow::readInput()
@@ -92,8 +100,11 @@ void MainWindow::disableInput()
 
 void MainWindow::checkSelection()
 {
-    if (ui->textEdit->textCursor().selectionStart() < readOnlyRange)
+    QTextCursor c = ui->textEdit->textCursor();
+    if (c.selectionStart() < readOnlyRange)
         ui->textEdit->setReadOnly(true);
+    if (c.selectionStart() == c.selectionEnd())
+        checkCurrentPosition();
 }
 
 void MainWindow::displayOutput(QString out)
@@ -130,8 +141,10 @@ void MainWindow::checkCurrentPosition()
             ui->textEdit->setText(buffer + " ");
             ui->textEdit->moveCursor(QTextCursor::End);
         }
-        else if (ui->textEdit->textCursor().position() == readOnlyRange-1)
+        else if (ui->textEdit->textCursor().position() == readOnlyRange-1) {
             ui->textEdit->moveCursor(QTextCursor::NextCharacter);
+            beep_sound.play();
+        }
         else
             ui->textEdit->setReadOnly(true);
     }
@@ -164,6 +177,7 @@ void MainWindow::displayPreviousExp()
 {
     if (expIndex == 0) {
         // Annoying error sound ?
+        beep_sound.play();
         return; // cheating
     }
     QString buffer = ui->textEdit->toPlainText();
@@ -179,6 +193,7 @@ void MainWindow::displayNextExp()
 {
     if (expIndex > expHistory.length()-2) {
         // Annoying error sound too !!
+        beep_sound.play();
         return;
     }
     QString buffer = ui->textEdit->toPlainText();
