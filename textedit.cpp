@@ -28,4 +28,3 @@ void TextEdit::keyPressEvent(QKeyEvent *event)
     if (moveCursorToEnd)
         moveCursor(QTextCursor::End);
 }
-

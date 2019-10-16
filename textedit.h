@@ -11,6 +11,8 @@ class TextEdit : public QTextEdit
 public:
     TextEdit(QWidget *parent = nullptr);
 
+private:
+
 signals:
     void enterPressed();
     void previousExp();

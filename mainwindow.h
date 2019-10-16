@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QFile>
+#include <QTextCursor>
 
 #include <QDebug>
 
@@ -42,6 +43,7 @@ private slots:
     void displayOutput(QString out);
     void checkCurrentPosition();
     void checkCompleteness();
+    void checkSelection();
 
     // Navigation through previously evaluated expressions
     void displayPreviousExp();

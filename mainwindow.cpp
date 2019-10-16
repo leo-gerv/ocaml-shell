@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->textEdit, &TextEdit::enterPressed, this, &MainWindow::checkCompleteness);
     connect(ui->textEdit, &TextEdit::nextExp, this, &MainWindow::displayNextExp);
     connect(ui->textEdit, &TextEdit::previousExp, this, &MainWindow::displayPreviousExp);
+    connect(ui->textEdit, &QTextEdit::selectionChanged, this, &MainWindow::checkSelection);
 
     caml_toplevel.initCaml();
 }
@@ -36,10 +37,25 @@ void MainWindow::readInput()
 {
     ui->statusbar->showMessage("Status: Done evaluating. Ready for input !");
     if (!expHistory.isEmpty()) {
-        QStringList lines = ui->textEdit->toPlainText().split("\n");
+        /*QStringList lines = ui->textEdit->toPlainText().split("\n");
         QStringList evalLine = lines[lines.length()-2].split(":");
-        QString partWithStatus = evalLine[evalLine.length()-2];
+        QString partWithStatus = evalLine[evalLine.length()-2];*/
+        QString partWithStatus = ui->textEdit->toPlainText().split(";;").last();
+        /*if (partWithStatus.length()<5)
+            return;
+        if ((partWithStatus.length()==5 && partWithStatus.contains("Error")) || (partWithStatus.length()==9 && partWithStatus.contains("Exception"))) {
+            validExp.append(false);
+            ui->statusbar->showMessage("Status: evaluation failed due to an error or exception. Ready for input !");
+            return;
+        }
+        if (partWithStatus.length() < 10)
+            return;
         partWithStatus = partWithStatus.mid(partWithStatus.length()-10);
+        if (partWithStatus.contains("Error") || partWithStatus.contains("Exception")) {
+            validExp.append(false);
+            ui->statusbar->showMessage("Status: evaluation failed due to an error or exception. Ready for input !");
+            // some syntax highlight ?
+        }*/
         if (partWithStatus.contains("Error") || partWithStatus.contains("Exception")) {
             validExp.append(false);
             ui->statusbar->showMessage("Status: evaluation failed due to an error or exception. Ready for input !");
@@ -54,6 +70,12 @@ void MainWindow::readInput()
 
 void MainWindow::disableInput()
 {}
+
+void MainWindow::checkSelection()
+{
+    if (ui->textEdit->textCursor().selectionStart() < readOnlyRange)
+        ui->textEdit->setReadOnly(true);
+}
 
 void MainWindow::displayOutput(QString out)
 {
@@ -89,6 +111,8 @@ void MainWindow::checkCurrentPosition()
             ui->textEdit->setText(buffer + " ");
             ui->textEdit->moveCursor(QTextCursor::End);
         }
+        else if (ui->textEdit->textCursor().position() == readOnlyRange-1)
+            ui->textEdit->moveCursor(QTextCursor::NextCharacter);
         else
             ui->textEdit->setReadOnly(true);
     }
@@ -141,4 +165,6 @@ void MainWindow::displayNextExp()
     QString buffer = ui->textEdit->toPlainText();
     expIndex++;
     ui->textEdit->setText(buffer.mid(0, readOnlyRange) + expHistory[expIndex]);
+    if (expIndex == expHistory.length()-1)
+        expHistory.removeLast();
 }
