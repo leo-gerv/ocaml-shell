@@ -15,6 +15,7 @@
 
 #include "toplevel.h"
 #include "textedit.h"
+#include "builtin_exps.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -44,6 +45,7 @@ private slots:
     void checkCurrentPosition();
     void checkCompleteness();
     void checkSelection();
+    void requestAutocomplete();
 
     // Navigation through previously evaluated expressions
     void displayPreviousExp();

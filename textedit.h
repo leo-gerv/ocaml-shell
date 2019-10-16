@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QKeyEvent>
 
+#include <QDebug>
+
 class TextEdit : public QTextEdit
 {
     Q_OBJECT
@@ -17,6 +19,7 @@ signals:
     void enterPressed();
     void previousExp();
     void nextExp();
+    void tabRequest();
 
 protected:
     void keyPressEvent(QKeyEvent *event);

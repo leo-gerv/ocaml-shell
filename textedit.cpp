@@ -8,7 +8,7 @@ TextEdit::TextEdit(QWidget *parent): QTextEdit(parent)
 void TextEdit::keyPressEvent(QKeyEvent *event)
 {
     bool moveCursorToEnd = false;
-    if (!((event->key() == Qt::Key_Return) && (textCursor().position() < toPlainText().length())))
+    if (!((event->key() == Qt::Key_Return) && (textCursor().position() < toPlainText().length())) && (event->key() != Qt::Key_Tab))
         QTextEdit::keyPressEvent(event);
     switch (event->key()) {
     case Qt::Key_Up:
@@ -21,6 +21,9 @@ void TextEdit::keyPressEvent(QKeyEvent *event)
         break;
     case Qt::Key_Return:
         emit enterPressed();
+        break;
+    case Qt::Key_Tab:
+        emit tabRequest();
         break;
     default:
         break;

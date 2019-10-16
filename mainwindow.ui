@@ -23,7 +23,7 @@ color: rgb(142, 178, 200);
     <item row="0" column="0">
      <widget class="QFrame" name="frame">
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(23, 48, 44);
+       <string notr="true">background-color: rgb(5, 45, 35);
 border-radius: 4px;</string>
       </property>
       <property name="frameShape">

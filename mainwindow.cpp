@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->textEdit, &TextEdit::nextExp, this, &MainWindow::displayNextExp);
     connect(ui->textEdit, &TextEdit::previousExp, this, &MainWindow::displayPreviousExp);
     connect(ui->textEdit, &QTextEdit::selectionChanged, this, &MainWindow::checkSelection);
+    connect(ui->textEdit, &TextEdit::tabRequest, this, &MainWindow::requestAutocomplete);
 
     caml_toplevel.initCaml();
 }
@@ -31,6 +32,24 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::requestAutocomplete()
+{
+    QString currentWord = ui->textEdit->toPlainText().mid(readOnlyRange).split(" ").last(),
+            buffer = ui->textEdit->toPlainText();
+
+
+    QStringList matchingFunctions;
+    for (int i=0; i<BuiltIn_Expressions::functions_count; i++) {
+        if (BuiltIn_Expressions::functions[i].startsWith(currentWord))
+            matchingFunctions.append(BuiltIn_Expressions::functions[i]);
+    }
+
+    if (matchingFunctions.length() == 1) {
+        ui->textEdit->setText(buffer.mid(0, buffer.length() - currentWord.length()) + matchingFunctions.first() + " ");
+        ui->textEdit->moveCursor(QTextCursor::End);
+    }
 }
 
 void MainWindow::readInput()

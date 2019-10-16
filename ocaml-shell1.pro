@@ -22,6 +22,7 @@ SOURCES += \
     toplevel.cpp
 
 HEADERS += \
+    builtin_exps.h \
     mainwindow.h \
     textedit.h \
     toplevel.h
