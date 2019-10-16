@@ -189,6 +189,14 @@ void MainWindow::displayPreviousExp()
     ui->textEdit->setText(buffer.mid(0, readOnlyRange) + expHistory[expIndex]);
 }
 
+void MainWindow::on_fontAction_triggered()
+{
+    bool ok = false;
+    QFont newFont = QFontDialog::getFont(&ok, ui->textEdit->font(), this, "Select a new font");
+    if (ok)
+        ui->textEdit->setFont(newFont);
+}
+
 void MainWindow::displayNextExp()
 {
     if (expIndex > expHistory.length()-2) {

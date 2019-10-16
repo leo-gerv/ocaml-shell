@@ -16,6 +16,8 @@
 #include <QCloseEvent>
 #include <QSound>
 #include <QTextFragment>
+#include <QFontDialog>
+#include <QFont>
 
 #include "toplevel.h"
 #include "textedit.h"
@@ -57,6 +59,7 @@ private slots:
     void displayNextExp();
 
     void on_saveExp_triggered();
+    void on_fontAction_triggered();
 
 protected:
     void closeEvent(QCloseEvent *event);
