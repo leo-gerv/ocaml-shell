@@ -18,17 +18,13 @@ private:
     QString currentExp;
 
 signals:
-    void exitRequested();
+    void exitRequested(int exitCode);
     void evalDone();
     void requestEval();
     void writeOutput(QString out);
 
 public:
     void eval(QString text);
-    void killCaml(); // I like that name :)
-
-public slots:
-
 
 private slots:
     void readOutput();
