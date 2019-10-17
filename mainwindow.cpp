@@ -9,7 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
       expHistory(),
       expIndex(0),
       validExp(),
-      lastExpNotEvaluated(false)
+      lastExpNotEvaluated(false),
+      doubleTab(false)
     #ifdef MULTIMEDIA_ENABLED
       ,beep_sound(":/beep.wav", this)
     #endif
@@ -28,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->textEdit, &TextEdit::previousExp, this, &MainWindow::displayPreviousExp);
     connect(ui->textEdit, &QTextEdit::selectionChanged, this, &MainWindow::checkSelection);
     connect(ui->textEdit, &TextEdit::tabRequest, this, &MainWindow::requestAutocomplete);
+    connect(ui->textEdit, &QTextEdit::textChanged, this, &MainWindow::tabtabdisable);
 
     caml_toplevel.initCaml();
 }
@@ -35,6 +37,11 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::tabtabdisable()
+{
+    doubleTab = false;
 }
 
 QString MainWindow::find_common_root(const QStringList& list)
@@ -60,6 +67,33 @@ QString MainWindow::find_common_root(const QStringList& list)
     return root;
 }
 
+void MainWindow::displayTabMatches(QStringList &matches)
+{
+    QString out;
+    QFontMetrics metrics(ui->textEdit->font());
+    {
+        QString swapper;
+        for (int i=0, l=matches.length(); i<l; i++) {
+            swapper = matches[i];
+            if (metrics.horizontalAdvance(out + swapper) < ui->textEdit->width()) {
+                if (i>0) {
+                    out = out.leftJustified(30 - matches[i-1].length());
+                }
+                out += swapper;
+            }
+            else {
+                out += "\n" + swapper;
+            }
+        }
+    }
+    QString currentExp = ui->textEdit->toPlainText().mid(readOnlyRange);
+    QString past = ui->textEdit->toPlainText().mid(0, readOnlyRange);
+    out = "Possible expressions: \n" + out + "\n# ";
+    readOnlyRange += out.length();
+    ui->textEdit->setText(past + out + currentExp);
+    ui->textEdit->moveCursor(QTextCursor::End);
+}
+
 void MainWindow::requestAutocomplete()
 {
     QString currentWord = ui->textEdit->toPlainText().mid(readOnlyRange).split(" ").last().split('(').last(),
@@ -77,8 +111,13 @@ void MainWindow::requestAutocomplete()
         ui->textEdit->moveCursor(QTextCursor::End);
     }
     else if (!matchingFunctions.empty()) {
+        if (doubleTab) {
+            displayTabMatches(matchingFunctions);
+            return;
+        }
         ui->textEdit->setText(buffer.mid(0,buffer.length() - currentWord.length()) + find_common_root(matchingFunctions));
         ui->textEdit->moveCursor(QTextCursor::End);
+        doubleTab = true;
     }
 }
 

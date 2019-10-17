@@ -22,6 +22,7 @@
 #include <QTextFragment>
 #include <QFontDialog>
 #include <QFont>
+#include <QFontMetrics>
 
 #include "toplevel.h"
 #include "textedit.h"
@@ -47,11 +48,13 @@ private:
     int expIndex;
     QList<int> validExp;
     bool lastExpNotEvaluated;
+    bool doubleTab;
     #ifdef MULTIMEDIA_ENABLED
     QSound beep_sound;
 #endif
 
     QString find_common_root(const QStringList& list);
+    void displayTabMatches(QStringList &matches);
 
 private slots:
     void readInput();
@@ -66,8 +69,12 @@ private slots:
     void displayPreviousExp();
     void displayNextExp();
 
+    // Tab related
+    void tabtabdisable();
+
     void on_saveExp_triggered();
     void on_fontAction_triggered();
+
 
 protected:
     void closeEvent(QCloseEvent *event);
