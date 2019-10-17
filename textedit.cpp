@@ -25,6 +25,10 @@ void TextEdit::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Tab:
         emit tabRequest();
         break;
+    case Qt::Key_End:
+        setText(toPlainText()+";;");
+        emit enterPressed();
+        break;
     default:
         break;
     }

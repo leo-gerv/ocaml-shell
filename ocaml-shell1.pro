@@ -2,6 +2,14 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+# Uncomment to enable sounds
+#CONFIG += MULTIMEDIA_ENABLED
+
+MULTIMEDIA_ENABLED {
+    QT += multimedia
+    DEFINES += "MULTIMEDIA_ENABLED"
+}
+
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -34,3 +42,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc

@@ -11,12 +11,15 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Ocaml Shell</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/camel.png</normaloff>:/camel.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(64, 64, 64);
-color: rgb(142, 178, 200);
-</string>
+color: rgb(142, 178, 200);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -50,7 +53,7 @@ border-radius: 4px;</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSome_menu">
@@ -59,7 +62,14 @@ border-radius: 4px;</string>
     </property>
     <addaction name="saveExp"/>
    </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="fontAction"/>
+   </widget>
    <addaction name="menuSome_menu"/>
+   <addaction name="menuSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="statusTip">
@@ -77,6 +87,11 @@ border-radius: 4px;</string>
     <string>Save valid expressions</string>
    </property>
   </action>
+  <action name="fontAction">
+   <property name="text">
+    <string>Set shell font</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -85,6 +100,8 @@ border-radius: 4px;</string>
    <header>textedit.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

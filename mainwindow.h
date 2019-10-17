@@ -13,6 +13,16 @@
 
 #include <QDebug>
 
+#include <QCloseEvent>
+
+#ifdef MULTIMEDIA_ENABLED
+#include <QSound>
+#endif
+
+#include <QTextFragment>
+#include <QFontDialog>
+#include <QFont>
+
 #include "toplevel.h"
 #include "textedit.h"
 #include "builtin_exps.h"
@@ -37,6 +47,11 @@ private:
     int expIndex;
     QList<int> validExp;
     bool lastExpNotEvaluated;
+    #ifdef MULTIMEDIA_ENABLED
+    QSound beep_sound;
+#endif
+
+    QString find_common_root(const QStringList& list);
 
 private slots:
     void readInput();
@@ -52,7 +67,9 @@ private slots:
     void displayNextExp();
 
     void on_saveExp_triggered();
+    void on_fontAction_triggered();
 
 protected:
+    void closeEvent(QCloseEvent *event);
 };
 #endif // MAINWINDOW_H
