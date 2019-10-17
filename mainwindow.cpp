@@ -70,20 +70,14 @@ QString MainWindow::find_common_root(const QStringList& list)
 void MainWindow::displayTabMatches(QStringList &matches)
 {
     QString out;
-    QFontMetrics metrics(ui->textEdit->font());
     {
         QString swapper;
         for (int i=0, l=matches.length(); i<l; i++) {
             swapper = matches[i];
-            if (metrics.horizontalAdvance(out + swapper) < ui->textEdit->width()) {
-                if (i>0) {
-                    out = out.leftJustified(30 - matches[i-1].length());
-                }
-                out += swapper;
+            if (i>0) {
+                out += "     ";
             }
-            else {
-                out += "\n" + swapper;
-            }
+            out += swapper;
         }
     }
     QString currentExp = ui->textEdit->toPlainText().mid(readOnlyRange);

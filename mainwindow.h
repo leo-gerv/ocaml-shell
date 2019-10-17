@@ -22,7 +22,6 @@
 #include <QTextFragment>
 #include <QFontDialog>
 #include <QFont>
-#include <QFontMetrics>
 
 #include "toplevel.h"
 #include "textedit.h"
