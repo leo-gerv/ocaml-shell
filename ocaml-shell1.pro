@@ -24,6 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    highlighter.cpp \
     main.cpp \
     mainwindow.cpp \
     textedit.cpp \
@@ -31,6 +32,8 @@ SOURCES += \
 
 HEADERS += \
     builtin_exps.h \
+    colors.h \
+    highlighter.h \
     mainwindow.h \
     textedit.h \
     toplevel.h

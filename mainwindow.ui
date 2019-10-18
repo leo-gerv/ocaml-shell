@@ -10,6 +10,11 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Ocaml Shell</string>
   </property>
@@ -40,7 +45,13 @@ border-radius: 4px;</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
-        <widget class="TextEdit" name="textEdit"/>
+        <widget class="TextEdit" name="textEdit">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

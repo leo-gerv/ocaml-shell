@@ -33,11 +33,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->textEdit, &QTextEdit::textChanged, this, &MainWindow::tabtabdisable);
 
     caml_toplevel.initCaml();
+
+    // Setup higlighter
+    highlighter = new Highlighter(ui->textEdit->document());
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete highlighter;
 }
 
 void MainWindow::tabtabdisable()
@@ -265,6 +269,7 @@ void MainWindow::on_fontAction_triggered()
 {
     bool ok = false;
     QFont newFont = QFontDialog::getFont(&ok, ui->textEdit->font(), this, "Select a new font");
+
     if (ok)
         ui->textEdit->setFont(newFont);
 }
@@ -273,7 +278,7 @@ void MainWindow::displayNextExp()
 {
     if (expIndex > expHistory.length()-2) {
         // Annoying error sound too !!
-        #ifdef MULTIMEDIA_ENABLED
+#ifdef MULTIMEDIA_ENABLED
         beep_sound.play();
 #endif
         return;
