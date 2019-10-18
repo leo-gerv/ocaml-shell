@@ -48,6 +48,7 @@ private:
     QList<int> validExp;
     bool lastExpNotEvaluated;
     bool doubleTab;
+    QString lastExp;
     #ifdef MULTIMEDIA_ENABLED
     QSound beep_sound;
 #endif

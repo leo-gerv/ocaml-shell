@@ -10,7 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
       expIndex(0),
       validExp(),
       lastExpNotEvaluated(false),
-      doubleTab(false)
+      doubleTab(false),
+      lastExp()
     #ifdef MULTIMEDIA_ENABLED
       ,beep_sound(":/beep.wav", this)
     #endif
@@ -152,6 +153,10 @@ void MainWindow::readInput()
         }
         else {
             validExp.append(true);
+            if (lastExp.startsWith("let ") && !BuiltIn_Expressions::functions.contains(lastExp.split(" ")[1])) {
+                BuiltIn_Expressions::functions.append(lastExp.split(" ")[1]);
+                BuiltIn_Expressions::functions_count++;
+            }
             // some syntax highlight ?
         }
     }
@@ -232,7 +237,8 @@ void MainWindow::checkCompleteness()
         caml_toplevel.eval(exp);
         if (lastExpNotEvaluated)
             expHistory.removeLast();
-        expHistory+= exp.mid(0, exp.length()-1);
+        lastExp = exp.mid(0, exp.length()-1);
+        expHistory+= lastExp;
         expIndex = expHistory.length();
     }
 }
