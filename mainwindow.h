@@ -26,6 +26,7 @@
 #include "toplevel.h"
 #include "textedit.h"
 #include "builtin_exps.h"
+#include "highlighter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -49,7 +50,8 @@ private:
     bool lastExpNotEvaluated;
     bool doubleTab;
     QString lastExp;
-    #ifdef MULTIMEDIA_ENABLED
+    Highlighter *highlighter = nullptr;
+#ifdef MULTIMEDIA_ENABLED
     QSound beep_sound;
 #endif
 
