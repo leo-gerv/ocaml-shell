@@ -80,6 +80,7 @@ border-radius: 4px;</string>
      <string>Settings</string>
     </property>
     <addaction name="fontAction"/>
+    <addaction name="clearHist"/>
    </widget>
    <addaction name="menuSome_menu"/>
    <addaction name="menuSettings"/>
@@ -103,6 +104,11 @@ border-radius: 4px;</string>
   <action name="fontAction">
    <property name="text">
     <string>Set shell font</string>
+   </property>
+  </action>
+  <action name="clearHist">
+   <property name="text">
+    <string>Clear command history</string>
    </property>
   </action>
  </widget>

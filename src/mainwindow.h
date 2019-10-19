@@ -10,6 +10,8 @@
 #include <QMessageBox>
 #include <QFile>
 #include <QTextCursor>
+#include <QProcess>
+#include <QTime>
 
 #include <QDebug>
 
@@ -23,6 +25,8 @@
 #include <QTextDocumentFragment>
 #include <QFontDialog>
 #include <QFont>
+
+#include <QSettings>
 
 #include "toplevel.h"
 #include "textedit.h"
@@ -59,12 +63,15 @@ private:
     bool doubleTab;
     QString lastExp;
     Highlighter *highlighter = nullptr;
+    QSettings settings;
+    int historyShift;
 #ifdef MULTIMEDIA_ENABLED
     QSound beep_sound;
 #endif
 
     QString find_common_root(const QStringList& list);
     void displayTabMatches(QStringList &matches);
+    void loadSettings();
 
 private slots:
     void readInput();
@@ -85,9 +92,16 @@ private slots:
 
     void on_saveExp_triggered();
     void on_fontAction_triggered();
+    void on_clearHist_triggered();
 
 
 protected:
     void closeEvent(QCloseEvent *event);
 };
+
+// Settings keys
+#define FONT_KEY "selectedFont"
+#define HISTORY_KEY "expressionsHistory"
+
+
 #endif // MAINWINDOW_H

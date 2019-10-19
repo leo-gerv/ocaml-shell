@@ -15,7 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
       validExp(),
       lastExpNotEvaluated(false),
       doubleTab(false),
-      lastExp()
+      lastExp(),
+      settings(QSettings::NativeFormat, QSettings::UserScope, "qt-designed-apps", "ocaml-shell-settings", this),
+      historyShift(0)
     #ifdef MULTIMEDIA_ENABLED
       ,beep_sound(":/beep.wav", this)
     #endif
@@ -44,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Setup higlighter
     highlighter = new Highlighter(ui->textEdit->document());
+
+    loadSettings();
 }
 
 MainWindow::~MainWindow()
@@ -131,6 +135,7 @@ void MainWindow::requestAutocomplete()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     caml_toplevel.killCaml();
+    settings.setValue(HISTORY_KEY, expHistory);
     QMainWindow::closeEvent(event);
     qApp->quit();
 }
@@ -189,9 +194,9 @@ void MainWindow::on_saveExp_triggered()
         return;
     }
     QString data;
-    for (int i=0, l=validExp.length(); i<l; i++) {
+    for (int i=0, l=validExp.length()-1; i<l; i++) {
         if (validExp[i])
-            data.append(expHistory[i] + "\n\n");
+            data.append(expHistory[i + historyShift] + "\n\n"); // Do not save expressions from previous sessions
     }
     f.write(data.toUtf8());
     f.close();
@@ -240,11 +245,25 @@ void MainWindow::checkCompleteness()
         if (needNewline)
             ui->textEdit->setText(ui->textEdit->toPlainText() + "\n");
         caml_toplevel.eval(exp);
-        if (lastExpNotEvaluated)
-            expHistory.removeLast();
+        if (lastExpNotEvaluated) {
+            //expHistory.removeLast();
+        }
         lastExp = exp.mid(0, exp.length()-1);
         expHistory+= lastExp;
         expIndex = expHistory.length();
+    }
+}
+
+void MainWindow::on_clearHist_triggered()
+{
+    if (QMessageBox::question(this, "Confirmation", "Are you really willing to clear your command history ? The program will restart") == QMessageBox::Yes) {
+        // Creates a backup, just incase. Might later add a function to retrieve backups' data
+        settings.setValue("history-backup-" + QDate::currentDate().toString(Qt::ISODate) + "/" + QTime::currentTime().toString(), expHistory);
+        settings.remove(HISTORY_KEY);
+        if (!QProcess::startDetached(qApp->applicationFilePath()))
+            QMessageBox::warning(this, "Error", "Could not restart the application. Exiting anyway...");
+        expHistory.clear();
+        close();
     }
 }
 
@@ -271,8 +290,25 @@ void MainWindow::on_fontAction_triggered()
     bool ok = false;
     QFont newFont = QFontDialog::getFont(&ok, ui->textEdit->font(), this, "Select a new font");
 
-    if (ok)
+    if (ok) {
         ui->textEdit->setFont(newFont);
+        settings.setValue(FONT_KEY, newFont);
+    }
+}
+
+void MainWindow::loadSettings()
+{
+    // Load font if it exists
+    if (settings.contains(FONT_KEY)) {
+        ui->textEdit->setFont(qvariant_cast<QFont>(settings.value(FONT_KEY)));
+    }
+
+    // Load expression history
+    if (settings.contains(HISTORY_KEY)) {
+        expHistory = qvariant_cast<QStringList>(settings.value(HISTORY_KEY));
+        historyShift = expHistory.length();;
+        expIndex = historyShift;
+    }
 }
 
 void MainWindow::displayNextExp()
@@ -287,6 +323,7 @@ void MainWindow::displayNextExp()
     QString buffer = ui->textEdit->toPlainText();
     expIndex++;
     ui->textEdit->setText(buffer.mid(0, readOnlyRange) + expHistory[expIndex]);
-    if (expIndex == expHistory.length()-1)
+    if (expIndex == expHistory.length()-1) {
         expHistory.removeLast();
+    }
 }
