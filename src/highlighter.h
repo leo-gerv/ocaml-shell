@@ -29,7 +29,7 @@ private:
 
     QVector<HighlightingRule> highlightingRules;
 
-    HighlightingRule stringRule;
+    QTextCharFormat stringFormat;
 };
 
 #endif // HIGHLIGHTER_H

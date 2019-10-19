@@ -12,7 +12,8 @@
   </property>
   <property name="font">
    <font>
-    <pointsize>14</pointsize>
+    <family>Fixedsys</family>
+    <pointsize>16</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -48,6 +49,7 @@ border-radius: 4px;</string>
         <widget class="TextEdit" name="textEdit">
          <property name="font">
           <font>
+           <family>Fixedsys</family>
            <pointsize>14</pointsize>
           </font>
          </property>

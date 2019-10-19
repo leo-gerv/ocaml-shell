@@ -1,6 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "highlighter.h"
+
+MainWindow *MainWindow::instance = nullptr;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow),
@@ -16,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent)
       ,beep_sound(":/beep.wav", this)
     #endif
 {
+    // Singleton
+    instance = this;
+
     ui->setupUi(this);
 
     ui->statusbar->showMessage("Status: not initialized");

@@ -26,7 +26,8 @@
 #include "toplevel.h"
 #include "textedit.h"
 #include "builtin_exps.h"
-#include "highlighter.h"
+
+class Highlighter;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -37,11 +38,17 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    // Singleton
+    static MainWindow *instance;
+
+public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private:
+public:
     Ui::MainWindow *ui;
+
+private:
     TopLevel caml_toplevel;
     int readOnlyRange;
     QStringList expHistory;
