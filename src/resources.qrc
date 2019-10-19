@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="../res/">
         <file>beep.wav</file>
         <file>camel.png</file>
     </qresource>
