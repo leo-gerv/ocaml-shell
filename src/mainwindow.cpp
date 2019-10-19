@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->textEdit, &QTextEdit::selectionChanged, this, &MainWindow::checkSelection);
     connect(ui->textEdit, &TextEdit::tabRequest, this, &MainWindow::requestAutocomplete);
     connect(ui->textEdit, &QTextEdit::textChanged, this, &MainWindow::tabtabdisable);
+    connect(ui->textEdit, &TextEdit::leftClickReleased, this, &MainWindow::onLeftClickReleased);
 
     caml_toplevel.initCaml();
 
@@ -138,37 +139,22 @@ void MainWindow::readInput()
 {
     ui->statusbar->showMessage("Status: Done evaluating. Ready for input !");
     if (!expHistory.isEmpty()) {
-        /*QStringList lines = ui->textEdit->toPlainText().split("\n");
-        QStringList evalLine = lines[lines.length()-2].split(":");
-        QString partWithStatus = evalLine[evalLine.length()-2];*/
         QString partWithStatus = ui->textEdit->toPlainText().split(";;").last();
-        /*if (partWithStatus.length()<5)
-            return;
-        if ((partWithStatus.length()==5 && partWithStatus.contains("Error")) || (partWithStatus.length()==9 && partWithStatus.contains("Exception"))) {
-            validExp.append(false);
-            ui->statusbar->showMessage("Status: evaluation failed due to an error or exception. Ready for input !");
-            return;
-        }
-        if (partWithStatus.length() < 10)
-            return;
-        partWithStatus = partWithStatus.mid(partWithStatus.length()-10);
+
         if (partWithStatus.contains("Error") || partWithStatus.contains("Exception")) {
             validExp.append(false);
             ui->statusbar->showMessage("Status: evaluation failed due to an error or exception. Ready for input !");
-            // some syntax highlight ?
-        }*/
-        if (partWithStatus.contains("Error") || partWithStatus.contains("Exception")) {
-            validExp.append(false);
-            ui->statusbar->showMessage("Status: evaluation failed due to an error or exception. Ready for input !");
-            // some syntax highlight ?
         }
         else {
             validExp.append(true);
-            if (lastExp.startsWith("let ") && !BuiltIn_Expressions::functions.contains(lastExp.split(" ")[1])) {
-                BuiltIn_Expressions::functions.append(lastExp.split(" ")[1]);
+            QStringList split_exp = lastExp.split(" ");
+            if ((split_exp.length()>2) && (split_exp[0] == QString("let"))) {
+                if ((split_exp.length()>3) && (split_exp[1] == QString("rec")))
+                    BuiltIn_Expressions::functions.append(split_exp[2]);
+                else
+                    BuiltIn_Expressions::functions.append(split_exp[1]);
                 BuiltIn_Expressions::functions_count++;
             }
-            // some syntax highlight ?
         }
     }
 }
@@ -209,6 +195,14 @@ void MainWindow::on_saveExp_triggered()
     }
     f.write(data.toUtf8());
     f.close();
+}
+
+void MainWindow::onLeftClickReleased()
+{
+    QTextCursor c = ui->textEdit->textCursor();
+    if ((c.position() < readOnlyRange) && (c.selection().isEmpty())) {
+        ui->textEdit->moveCursor(QTextCursor::End);
+    }
 }
 
 void MainWindow::checkCurrentPosition()

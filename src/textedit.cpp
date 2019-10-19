@@ -35,3 +35,16 @@ void TextEdit::keyPressEvent(QKeyEvent *event)
     if (moveCursorToEnd)
         moveCursor(QTextCursor::End);
 }
+
+void TextEdit::mouseReleaseEvent(QMouseEvent *e)
+{
+    switch (e->button()) {
+    case Qt::LeftButton:
+        emit leftClickReleased();
+        break;
+    default:
+        break;
+    }
+
+    QTextEdit::mouseReleaseEvent(e);
+}

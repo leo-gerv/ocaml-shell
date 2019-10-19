@@ -4,6 +4,7 @@
 #include <QTextEdit>
 #include <QObject>
 #include <QKeyEvent>
+#include <QMouseEvent>
 
 #include <QDebug>
 
@@ -20,9 +21,11 @@ signals:
     void previousExp();
     void nextExp();
     void tabRequest();
+    void leftClickReleased();
 
 protected:
     void keyPressEvent(QKeyEvent *event);
+    void mouseReleaseEvent(QMouseEvent *e);
 };
 
 #endif // TEXTEDIT_H

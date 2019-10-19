@@ -20,6 +20,7 @@
 #endif
 
 #include <QTextFragment>
+#include <QTextDocumentFragment>
 #include <QFontDialog>
 #include <QFont>
 
@@ -73,6 +74,7 @@ private slots:
     void checkCompleteness();
     void checkSelection();
     void requestAutocomplete();
+    void onLeftClickReleased();
 
     // Navigation through previously evaluated expressions
     void displayPreviousExp();
