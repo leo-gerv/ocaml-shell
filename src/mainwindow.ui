@@ -20,7 +20,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/camel.png</normaloff>:/camel.png</iconset>
+    <normaloff>:/window_icon</normaloff>:/window_icon</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(64, 64, 64);

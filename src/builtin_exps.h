@@ -9,6 +9,7 @@ namespace BuiltIn_Expressions {
     static QStringList functions({"#load","#use",
                                   "Unix","Unix.sleep","\"unix.cma\"",
                                   "Random","Random.init","Random.int",
+                                  "let", "function", "match",
                                   "on",
                                   "register_named_value",
                                   "raise",

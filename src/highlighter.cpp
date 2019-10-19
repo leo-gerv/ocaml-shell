@@ -43,7 +43,7 @@ Highlighter::Highlighter(QTextDocument *parent)
     highlightingRules.append(rule);
 
     // Top Level //
-    rule.pattern = QRegularExpression("(OCaml version.*\\b)|(#)|(;;)");
+    rule.pattern = QRegularExpression("OCaml version.*\\b|#|;;|val|:");
     rule.format.setForeground(TOPLEVEL);
     highlightingRules.append(rule);
 

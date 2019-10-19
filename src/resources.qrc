@@ -1,6 +1,6 @@
 <RCC>
-    <qresource prefix="../res/">
-        <file>beep.wav</file>
-        <file>camel.png</file>
+    <qresource>
+        <file alias="beep">../res/beep.wav</file>
+        <file alias="window_icon">../res/camel.png</file>
     </qresource>
 </RCC>
