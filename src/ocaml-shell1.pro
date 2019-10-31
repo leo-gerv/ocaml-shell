@@ -24,6 +24,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    autocompleter.cpp \
+    completer_menu.cpp \
     highlighter.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -31,8 +33,10 @@ SOURCES += \
     toplevel.cpp
 
 HEADERS += \
+    autocompleter.h \
     builtin_exps.h \
     colors.h \
+    completer_menu.h \
     highlighter.h \
     mainwindow.h \
     textedit.h \

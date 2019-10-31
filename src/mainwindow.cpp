@@ -48,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent)
     highlighter = new Highlighter(ui->textEdit->document());
 
     loadSettings();
+
+    completer_menu = new CompleterMenu(ui->textEdit);
+    completer_menu->setStyleSheet("background-color: #303030;\ncolor: #954575;");
 }
 
 MainWindow::~MainWindow()
@@ -128,6 +131,9 @@ void MainWindow::requestAutocomplete()
         }
         ui->textEdit->setText(buffer.mid(0,buffer.length() - currentWord.length()) + find_common_root(matchingFunctions));
         ui->textEdit->moveCursor(QTextCursor::End);
+        completer_menu->fill(matchingFunctions);
+        completer_menu->move(ui->textEdit->cursorRect().bottomLeft());
+        completer_menu->show();
         doubleTab = true;
     }
 }
@@ -306,7 +312,7 @@ void MainWindow::loadSettings()
     // Load expression history
     if (settings.contains(HISTORY_KEY)) {
         expHistory = qvariant_cast<QStringList>(settings.value(HISTORY_KEY));
-        historyShift = expHistory.length();;
+        historyShift = expHistory.length();
         expIndex = historyShift;
     }
 }

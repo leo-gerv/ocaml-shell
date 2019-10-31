@@ -31,6 +31,7 @@
 #include "toplevel.h"
 #include "textedit.h"
 #include "builtin_exps.h"
+#include "completer_menu.h"
 
 class Highlighter;
 
@@ -65,6 +66,7 @@ private:
     Highlighter *highlighter = nullptr;
     QSettings settings;
     int historyShift;
+    CompleterMenu *completer_menu;
 #ifdef MULTIMEDIA_ENABLED
     QSound beep_sound;
 #endif
