@@ -131,9 +131,10 @@ void MainWindow::requestAutocomplete()
         }
         ui->textEdit->setText(buffer.mid(0,buffer.length() - currentWord.length()) + find_common_root(matchingFunctions));
         ui->textEdit->moveCursor(QTextCursor::End);
-        completer_menu->fill(matchingFunctions);
-        completer_menu->move(ui->textEdit->cursorRect().bottomLeft());
-        completer_menu->show();
+        // Uncomment once the class is complete
+//        completer_menu->fill(matchingFunctions);
+//        completer_menu->move(ui->textEdit->cursorRect().bottomLeft());
+//        completer_menu->show();
         doubleTab = true;
     }
 }

@@ -7,6 +7,8 @@
 #include <QWidget>
 #include <QStringList>
 
+// TODO
+
 class CompleterMenu : public QListWidget
 {
     Q_OBJECT

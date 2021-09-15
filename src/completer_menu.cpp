@@ -1,5 +1,7 @@
 #include "completer_menu.h"
 
+// TODO
+
 CompleterMenu::CompleterMenu(QWidget *parent): QListWidget(parent)
 {
     hide();
